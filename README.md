@@ -20,32 +20,32 @@ This decoder uses **[js-binary-schema-parser][5]** to parse the gif files (you c
 * *Angularjs*
 
 
-    return $http.get(gifURL, {
-        responseType: 'arraybuffer'
-    }).then(function(result){
-        var gif = new GIF(result.data);
-        // return the frame data as the promise result
-        return gif.decompressFrames();
-    });
+        return $http.get(gifURL, {
+            responseType: 'arraybuffer'
+        }).then(function(result){
+            var gif = new GIF(result.data);
+            // return the frame data as the promise result
+            return gif.decompressFrames();
+        });
     
 * *XMLHttpRequest*
     
      
-    var oReq = new XMLHttpRequest();
-    oReq.open("GET", gifURL, true);
-    oReq.responseType = "arraybuffer";
+        var oReq = new XMLHttpRequest();
+        oReq.open("GET", gifURL, true);
+        oReq.responseType = "arraybuffer";
 
-    oReq.onload = function (oEvent) {
-        var arrayBuffer = oReq.response; // Note: not oReq.responseText
-        if (arrayBuffer) {
-            var byteArray = new Uint8Array(arrayBuffer);
-            var gif = new GIF(byteArray);
-            var frames = gif.decompressFrames();
-            // do something with the frame data
-        }
-    };
+        oReq.onload = function (oEvent) {
+            var arrayBuffer = oReq.response; // Note: not oReq.responseText
+            if (arrayBuffer) {
+                var byteArray = new Uint8Array(arrayBuffer);
+                var gif = new GIF(byteArray);
+                var frames = gif.decompressFrames();
+                // do something with the frame data
+            }
+        };
 
-    oReq.send(null);
+        oReq.send(null);
 
 *Result:*
 

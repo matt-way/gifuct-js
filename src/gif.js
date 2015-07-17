@@ -189,7 +189,7 @@ GIF.prototype.decompressFrame = function(index){
 
 		return newPixels;
 	}
-};
+};d
 
 // returns all frames decompressed
 GIF.prototype.decompressFrames = function(){

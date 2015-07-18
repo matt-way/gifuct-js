@@ -22,7 +22,9 @@ function GIF(arrayBuffer){
 }
 
 // process a single gif image frames data, decompressing it using LZW 
-GIF.prototype.decompressFrame = function(index){
+// if buildPatch is true, the returned image will be a clamped 8 bit image patch
+// for use directly with a canvas.
+GIF.prototype.decompressFrame = function(index, buildPatch){
 
 	// make sure a valid frame is requested
 	if(index >= this.raw.frames.length){ return null; }
@@ -43,20 +45,41 @@ GIF.prototype.decompressFrame = function(index){
 		// setup usable image object
 		var image = {
 			pixels: pixels,
-			dims: frame.image.descriptor
+			dims: {
+				top: frame.image.descriptor.top,
+				left: frame.image.descriptor.left,
+				width: frame.image.descriptor.width,
+				height: frame.image.descriptor.height
+			}
 		};
+
+		// color table
+		if(frame.image.descriptor.lct && frame.image.descriptor.lct.exists){
+			image.colorTable = frame.image.lct;
+		}else{
+			image.colorTable = this.raw.gct;
+		}
 
 		// add per frame relevant gce information
 		if(frame.gce){
-			image.delay = frame.gce.delay * 10; // convert to ms
+			image.delay = (frame.gce.delay || 10) * 10; // convert to ms
 			image.disposalType = frame.gce.extras.disposal;
+			// transparency
+			if(frame.gce.extras.transparentColorGiven){
+				image.transparentIndex = frame.gce.transparentColorIndex;
+			}
+		}
+
+		// create canvas usable imagedata if desired
+		if(buildPatch){
+			image.patch = generatePatch(image);
 		}
 
 		return image;		
 	}
 
 	// frame does not contains image
-	return null;	
+	return null;
 
 
 	/**
@@ -69,7 +92,7 @@ GIF.prototype.decompressFrame = function(index){
 		var nullCode = -1;
 
 		var npix = pixelCount;
-		var available, clear, code_mask, code_size, end_of_information, in_code, old_code, bits, code, count, i, datum, data_size, first, top, bi, pi;
+		var available, clear, code_mask, code_size, end_of_information, in_code, old_code, bits, code, i, datum, data_size, first, top, bi, pi;
  
  		var dstPixels = new Array(pixelCount);
 		var prefix = new Array(MAX_STACK_SIZE);
@@ -100,7 +123,6 @@ GIF.prototype.decompressFrame = function(index){
 
 					bits += 8;
 					bi++;
-					count--;
 					continue;
 				}
 				// Get the next code.
@@ -136,19 +158,19 @@ GIF.prototype.decompressFrame = function(index){
 				}
 				
 				first = suffix[code] & 0xff;
-
-				// Add a new string to the string table,
-				if (available >= MAX_STACK_SIZE) {
-					break;
-				}
-				
 				pixelStack[top++] = first;
-				prefix[available] = old_code;
-				suffix[available] = first;
-				available++;
-				if (((available & code_mask) === 0) && (available < MAX_STACK_SIZE)) {
-					code_size++;
-					code_mask += available;
+
+				// add a new string to the table, but only if space is available
+				// if not, just continue with current table until a clear code is found
+				// (deferred clear code implementation as per GIF spec)
+				if(available < MAX_STACK_SIZE){
+					prefix[available] = old_code;
+					suffix[available] = first;
+					available++;
+					if (((available & code_mask) === 0) && (available < MAX_STACK_SIZE)) {
+						code_size++;
+						code_mask += available;
+					}
 				}
 				old_code = in_code;
 			}
@@ -157,7 +179,7 @@ GIF.prototype.decompressFrame = function(index){
 			dstPixels[pi++] = pixelStack[top];
 			i++;
 		}
- 
+
 		for (i = pi; i < npix; i++) {
 			dstPixels[i] = 0; // clear missing pixels
 		}
@@ -189,15 +211,34 @@ GIF.prototype.decompressFrame = function(index){
 
 		return newPixels;
 	}
-};d
+
+	// create a clamped byte array patch for the frame image to be used directly with a canvas
+	// TODO: could potentially squeeze some performance by doing a direct 32bit write per iteration
+	function generatePatch(image){
+
+		var totalPixels = image.pixels.length;
+		var patchData = new Uint8ClampedArray(totalPixels * 4);
+		for(var i=0; i<totalPixels; i++){
+			var pos = i * 4;
+			var colorIndex = image.pixels[i];
+			var color = image.colorTable[colorIndex];
+			patchData[pos] = color[0];
+			patchData[pos + 1] = color[1];
+			patchData[pos + 2] = color[2];
+			patchData[pos + 3] = colorIndex !== image.transparentIndex ? 255 : 0;
+		}
+
+		return patchData;
+	}
+};
 
 // returns all frames decompressed
-GIF.prototype.decompressFrames = function(){
+GIF.prototype.decompressFrames = function(buildPatch){
 	var frames = [];
 	for(var i=0; i<this.raw.frames.length; i++){
 		var frame = this.raw.frames[i];
 		if(frame.image){
-			frames.push(this.decompressFrame(i));
+			frames.push(this.decompressFrame(i, buildPatch));
 		}
 	}
 	return frames;

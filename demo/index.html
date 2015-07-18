@@ -1,0 +1,22 @@
+<html>
+<head>
+	<title>gifuct-js demo</title>
+</head>
+<body>
+	<div>
+		<canvas id="c"></canvas>
+	</div>
+	<div style="margin: 10px 0;">
+		<input id="url" type="text"></input>
+		<button onclick="updateGif()">Load</button>
+		<button onclick="playpause()">Play/Pause</button>
+	</div>
+	<div>
+		<input id="invert" type="checkbox" onchange="bInvert = !bInvert;">Invert Colours</input>
+		<input id="grayscale" type="checkbox" onchange="bGrayscale = !bGrayscale">Grayscale</input>
+	</div>
+
+	<script src="/dist/gifuct-js.js"></script>
+	<script src="demo.js"></script>
+</body>
+</html>

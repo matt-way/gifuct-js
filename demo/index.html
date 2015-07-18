@@ -7,13 +7,16 @@
 		<canvas id="c"></canvas>
 	</div>
 	<div style="margin: 10px 0;">
-		<input id="url" type="text"></input>
+		<input id="url" type="text"/>
 		<button onclick="updateGif()">Load</button>
 		<button onclick="playpause()">Play/Pause</button>
 	</div>
+	<div style="margin-bottom: 10px;">
+		<input id="invert" type="checkbox" onchange="bInvert = !bInvert;"> Invert Colours
+		<input id="grayscale" type="checkbox" onchange="bGrayscale = !bGrayscale"> Grayscale
+	</div>
 	<div>
-		<input id="invert" type="checkbox" onchange="bInvert = !bInvert;">Invert Colours</input>
-		<input id="grayscale" type="checkbox" onchange="bGrayscale = !bGrayscale">Grayscale</input>
+		<input id="pixels" type="range" min="0" max="100" step="1" value="20" onchange="pixelPercent = value;"> Pixelate Amount
 	</div>
 
 	<script src="/dist/gifuct-js.js"></script>

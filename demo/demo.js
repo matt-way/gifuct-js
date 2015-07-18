@@ -38,6 +38,7 @@ function loadGIF(){
 var playing = false;
 var bInvert = false;
 var bGrayscale = false;
+var pixelPercent = 20;
 var loadedFrames;
 var frameIndex;
 
@@ -113,7 +114,19 @@ function manipulate(){
 		grayscale(imageData.data);
 	}
 
+	// do pixelation
+	var pixelsX = 5 + Math.floor(pixelPercent / 100 * (c.width - 5));
+	var pixelsY = (pixelsX * c.height) / c.width;
+
+	if(pixelPercent != 100){
+		ctx.mozImageSmoothingEnabled = false;
+		ctx.webkitImageSmoothingEnabled = false;
+		ctx.imageSmoothingEnabled = false;
+	}
+
 	ctx.putImageData(imageData, 0, 0);
+	ctx.drawImage(c, 0, 0, c.width, c.height, 0, 0, pixelsX, pixelsY);
+	ctx.drawImage(c, 0, 0, pixelsX, pixelsY, 0, 0, c.width, c.height);
 }
 
 function renderFrame(){
@@ -126,7 +139,7 @@ function renderFrame(){
 	drawPatch(frame);
 
 	// perform manipulation
-	manipulate();	
+	manipulate();
 
 	// update the frame index
 	frameIndex++;

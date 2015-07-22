@@ -10,7 +10,7 @@ var gifCtx = gifCanvas.getContext('2d');
 
 var url = document.getElementById('url');
 // default gif
-url.value = 'images/test.gif';
+url.value = 'http://media.giphy.com/media/p6SDPRKcbREk/giphy.gif';
 
 // load the default gif
 loadGIF();
@@ -38,7 +38,7 @@ function loadGIF(){
 var playing = false;
 var bInvert = false;
 var bGrayscale = false;
-var pixelPercent = 20;
+var pixelPercent = 40;
 var loadedFrames;
 var frameIndex;
 

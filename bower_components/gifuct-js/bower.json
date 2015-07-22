@@ -1,0 +1,27 @@
+{
+  "name": "gifuct-js",
+  "version": "1.0.0",
+  "homepage": "https://github.com/matt-way/gifuct-js",
+  "authors": [
+    "Matt Way <matt__way@hotmail.com>"
+  ],
+  "main": "dist/gifuct-js.js",
+  "description": "Easy to use efficient .GIF parsing in the browser",
+  "keywords": [
+    "gif",
+    "parser",
+    "javascript"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "demo",
+    "gulpfile.js",
+    "package.json"
+  ],
+  "devDependencies": {
+    "js-binary-schema-parser": "~1.0.0"
+  }
+}

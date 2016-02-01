@@ -10,7 +10,7 @@ var gifCtx = gifCanvas.getContext('2d');
 
 var url = document.getElementById('url');
 // default gif
-url.value = '/demo/jblack.gif';
+url.value = '/demo/horses.gif';
 
 // load the default gif
 loadGIF();
@@ -202,8 +202,8 @@ function renderFrame(){
 	if(playing){
 		// delay the next gif frame
 		setTimeout(function(){
-			//requestAnimationFrame(renderFrame);
-			renderFrame();
+			requestAnimationFrame(renderFrame);
+			//renderFrame();
 		}, Math.max(0, Math.floor(frame.delay - diff)));
 	}
 }

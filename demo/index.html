@@ -17,7 +17,7 @@
 		<input id="grayscale" type="checkbox" onchange="bGrayscale = !bGrayscale"> Grayscale
 	</div>
 	<div>
-		<input id="pixels" type="range" min="0" max="100" step="1" value="100" onchange="pixelPercent = value;"> Pixelate Amount
+		<input id="pixels" type="range" min="0" max="100" step="1" value="100" oninput="pixelPercent = value;"> Pixelate Amount
 	</div>
 
 	<script src="/dist/gifuct-js.js"></script>

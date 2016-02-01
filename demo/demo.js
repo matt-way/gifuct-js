@@ -14,6 +14,7 @@ url.value = '/demo/jblack.gif';
 
 // load the default gif
 loadGIF();
+var gif;
 
 // load a gif with the current input url value
 function loadGIF(){
@@ -24,9 +25,9 @@ function loadGIF(){
 	oReq.onload = function (oEvent) {
 	    var arrayBuffer = oReq.response; // Note: not oReq.responseText
 	    if (arrayBuffer) {
-	        var byteArray = new Uint8Array(arrayBuffer);
-	        var gif = new GIF(byteArray);
+	        gif = new GIF(arrayBuffer);
 	        var frames = gif.decompressFrames(true);
+	        console.log(gif);
 	        // render the gif
 	        renderGIF(frames);
 	    }
@@ -36,9 +37,10 @@ function loadGIF(){
 }
 
 var playing = false;
+var bEdgeDetect = false;
 var bInvert = false;
 var bGrayscale = false;
-var pixelPercent = 20;
+var pixelPercent = 100;
 var loadedFrames;
 var frameIndex;
 
@@ -84,6 +86,48 @@ function drawPatch(frame){
 	gifCtx.drawImage(tempCanvas, dims.left, dims.top);
 }
 
+var edge = function(data, output){
+
+	var odata = output.data;
+	var width = gif.raw.lsd.width;
+	var height = gif.raw.lsd.height;
+
+	var conv = [-1, -1, -1, 
+				-1, 8, -1,
+				-1, -1, -1];
+	var halfside = Math.floor(3/2);
+
+	for(var y=0; y<height; y++){
+		for(var x=0; x<width; x++){
+
+			var r=0, g=0, b=0;
+			for(var cy=0; cy<3; cy++){
+				for(var cx=0; cx<3; cx++){
+
+					var scy = (y - halfside + cy);
+					var scx = (x - halfside + cx);
+
+					if(scy >= 0 && scy < height && scx >= 0 && scx < width){
+						var src = (scy * width + scx) * 4;
+						var f= cy * 3 + cx;
+						r += data[src] * conv[f];
+						g += data[src + 1] * conv[f];
+						b += data[src + 2] * conv[f];
+					}
+				}
+			}
+
+			var i = (y * width + x) * 4;
+			odata[i]     = r;
+			odata[i + 1] = g;
+			odata[i + 2] = b;
+			odata[i + 3] = 255;
+		}
+	}
+
+	return output;
+}
+
 var invert = function(data) {
 	for (var i = 0; i < data.length; i += 4) {
 		data[i]     = 255 - data[i];     // red
@@ -105,6 +149,11 @@ var grayscale = function(data) {
 
 function manipulate(){
 	var imageData = gifCtx.getImageData(0, 0, gifCanvas.width, gifCanvas.height);
+	var other = gifCtx.createImageData(gifCanvas.width, gifCanvas.height);
+
+	if(bEdgeDetect){
+		imageData = edge(imageData.data, other);
+	}
 
 	if(bInvert){
 		invert(imageData.data);	

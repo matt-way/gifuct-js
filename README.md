@@ -38,8 +38,7 @@ This decoder uses **[js-binary-schema-parser][5]** to parse the gif files (you c
         oReq.onload = function (oEvent) {
             var arrayBuffer = oReq.response; // Note: not oReq.responseText
             if (arrayBuffer) {
-                var byteArray = new Uint8Array(arrayBuffer);
-                var gif = new GIF(byteArray);
+                var gif = new GIF(arrayBuffer);
                 var frames = gif.decompressFrames(true);
                 // do something with the frame data
             }

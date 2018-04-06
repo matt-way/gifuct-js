@@ -9,10 +9,18 @@ var Parsers = require('../bower_components/js-binary-schema-parser/src/parsers')
 var subBlocks = {
 	label: 'blocks',
 	parser: function(stream){
-		var out = [];
+		var views = [];
+		var total = 0;
 		var terminator = 0x00;		
 		for(var size=stream.readByte(); size!==terminator; size=stream.readByte()){
-			out = out.concat(stream.readBytes(size));
+			views.push(stream.readBytes(size));
+			total += size;
+		}
+		var out = new Uint8Array(total);
+		total = 0;
+		for (var i = 0; i < views.length; i++) {
+			out.set(views[i], total);
+			total += views[i].length;
 		}
 		return out;
 	}

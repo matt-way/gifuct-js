@@ -46,6 +46,13 @@ This decoder uses **[js-binary-schema-parser][5]** to parse the gif files (you c
 
         oReq.send(null);
 
+* *fetch*
+
+        var promisedGif = fetch(gifURL)
+             .then(resp => resp.arrayBuffer())
+             .then(buff => new GIF(buff))
+             .then(gif => gif.decompressFrames(true));
+
 *Result:*
 
 The result of the `decompressFrames(buildPatch)` function returns an array of all the GIF image frames, and their meta data. Here is a an example frame:

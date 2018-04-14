@@ -233,11 +233,19 @@ GIF.prototype.decompressFrame = function(index, buildPatch){
 };
 
 // returns all frames decompressed
-GIF.prototype.decompressFrames = function(buildPatch){
+GIF.prototype.decompressFrames = function(buildPatch, startFrame, endFrame){
+	if (startFrame === undefined) {
+		startFrame = 0;
+	}
+	if (endFrame === undefined) {
+		endFrame = this.raw.frames.length;
+	} else {
+		endFrame = Math.min(endFrame, this.raw.frames.length);
+	}
 	var frames = [];
-	for(var i=0; i<this.raw.frames.length; i++){
+	for (var i = startFrame; i < endFrame; i++) {
 		var frame = this.raw.frames[i];
-		if(frame.image){
+		if (frame.image) {
 			frames.push(this.decompressFrame(i, buildPatch));
 		}
 	}

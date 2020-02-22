@@ -1,8 +1,8 @@
 {
   "name": "gifuct-js",
-  "version": "1.0.0",
-  "description": "Easy to use efficient .GIF parsing in the browser",
-  "main": "index.js",
+  "version": "2.0.0",
+  "description": "Easy to use efficient .GIF parsing in javascript",
+  "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

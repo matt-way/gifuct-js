@@ -4,7 +4,8 @@
   "description": "Easy to use efficient .GIF parsing in javascript",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel src --out-dir lib",
+    "build-demo": "babel demo/demo.js --out-file demo/demo.build.js"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,9 @@
     "url": "https://github.com/matt-way/gifuct-js/issues"
   },
   "homepage": "https://github.com/matt-way/gifuct-js",
-  "devDependencies": {}
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4"
+  }
 }

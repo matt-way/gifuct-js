@@ -1,6 +1,12 @@
+import { parse } from 'js-binary-schema-parser'
+import { buildStream } from 'js-binary-schema-parser/parsers/uint8'
+import { GIF } from 'js-binary-schema-parser/schemas'
+import { deinterlace } from './deinterlace'
+import { lzw } from './lzw'
+
 export const parseGIF = arrayBuffer => {
   const byteData = new Uint8Array(arrayBuffer)
-  return parse(buildStream(byteData), schema)
+  return parse(buildStream(byteData), GIF)
 }
 
 const generatePatch = image => {
@@ -19,7 +25,7 @@ const generatePatch = image => {
   return patchData
 }
 
-const decompressFrame = (frame, gct, buildImagePatch) => {
+export const decompressFrame = (frame, gct, buildImagePatch) => {
   if (!frame.image) {
     console.warn('gif frame does not have associated image.')
     return
@@ -65,7 +71,7 @@ const decompressFrame = (frame, gct, buildImagePatch) => {
   }
 
   // create canvas usable imagedata if desired
-  if (buildPatch) {
+  if (buildImagePatch) {
     resultImage.patch = generatePatch(resultImage)
   }
 

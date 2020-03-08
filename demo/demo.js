@@ -27,7 +27,7 @@ function loadGIF() {
   oReq.onload = function(oEvent) {
     var arrayBuffer = oReq.response // Note: not oReq.responseText
     if (arrayBuffer) {
-      gif = parseGif(arrayBuffer)
+      gif = parseGIF(arrayBuffer)
       var frames = decompressFrames(gif, true)
       console.log(gif)
       // render the gif

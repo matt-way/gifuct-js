@@ -8,35 +8,19 @@
     </div>
     <div style="margin: 10px 0;">
       <input id="url" type="text" />
-      <button onclick="loadGIF()">Load</button>
-      <button onclick="playpause()">Play/Pause</button>
+      <button id="loadGIF">Load</button>
+      <button id="playpause">Play/Pause</button>
     </div>
     <div style="margin-bottom: 10px;">
-      <input
-        id="grayscale"
-        type="checkbox"
-        onchange="bEdgeDetect = !bEdgeDetect"
-      />
+      <input id="edgedetect" type="checkbox" />
       Edge Detect
-      <input id="invert" type="checkbox" onchange="bInvert = !bInvert;" />
+      <input id="invert" type="checkbox" />
       Invert Colours
-      <input
-        id="grayscale"
-        type="checkbox"
-        onchange="bGrayscale = !bGrayscale"
-      />
+      <input id="grayscale" type="checkbox" />
       Grayscale
     </div>
     <div>
-      <input
-        id="pixels"
-        type="range"
-        min="0"
-        max="100"
-        step="1"
-        value="100"
-        oninput="pixelPercent = value;"
-      />
+      <input id="pixels" type="range" min="0" max="100" step="1" value="100" />
       Pixelate Amount
     </div>
 

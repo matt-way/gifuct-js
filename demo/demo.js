@@ -1,4 +1,4 @@
-import { parseGIF, decompressFrames } from '../lib'
+import { parseGIF, decompressFrames } from '../lib/index.js'
 
 // user canvas
 var c = document.getElementById('c')
@@ -13,6 +13,21 @@ var gifCtx = gifCanvas.getContext('2d')
 var url = document.getElementById('url')
 // default gif
 url.value = '/demo/horses.gif'
+
+document.getElementById('loadGIF').onclick = loadGIF
+document.getElementById('playpause').onclick = playpause
+document.getElementById('edgedetect').onchange = () => {
+  bEdgeDetect = !bEdgeDetect
+}
+document.getElementById('grayscale').onchange = () => {
+  bGrayscale = !bGrayscale
+}
+document.getElementById('invert').onchange = () => {
+  bInvert = !bInvert
+}
+document.getElementById('pixels').onchange = e => {
+  pixelPercent = e.target.value
+}
 
 // load the default gif
 loadGIF()
@@ -93,8 +108,8 @@ function drawPatch(frame) {
 
 var edge = function(data, output) {
   var odata = output.data
-  var width = gif.raw.lsd.width
-  var height = gif.raw.lsd.height
+  var width = gif.lsd.width
+  var height = gif.lsd.height
 
   var conv = [-1, -1, -1, -1, 8, -1, -1, -1, -1]
   var halfside = Math.floor(3 / 2)

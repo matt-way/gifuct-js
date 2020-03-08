@@ -1,6 +1,6 @@
+import GIF from 'js-binary-schema-parser/lib/schemas/gif'
 import { parse } from 'js-binary-schema-parser'
-import { buildStream } from 'js-binary-schema-parser/parsers/uint8'
-import { GIF } from 'js-binary-schema-parser/schemas'
+import { buildStream } from 'js-binary-schema-parser/lib/parsers/uint8'
 import { deinterlace } from './deinterlace'
 import { lzw } from './lzw'
 

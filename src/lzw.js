@@ -43,6 +43,7 @@ export const lzw = (minCodeSize, data, pixelCount) => {
   }
 
   // Decode GIF pixel stream.
+  var datum, bits, count, first, top, pi, bi
   datum = bits = count = first = top = pi = bi = 0
   for (i = 0; i < npix; ) {
     if (top === 0) {

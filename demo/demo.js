@@ -1,4 +1,4 @@
-import { parseGIF, decompressFrames } from '../src'
+import { parseGIF, decompressFrames } from '../lib'
 
 // user canvas
 var c = document.getElementById('c')
@@ -29,7 +29,6 @@ function loadGIF() {
     if (arrayBuffer) {
       gif = parseGIF(arrayBuffer)
       var frames = decompressFrames(gif, true)
-      console.log(gif)
       // render the gif
       renderGIF(frames)
     }

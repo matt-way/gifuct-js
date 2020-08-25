@@ -100,6 +100,8 @@ We underestimated the convolutedness of the GIF format, so this library couldn't
 
 [Matt Way][9] & [Nick Drewe][10]
 
+[Wethrift.com][11]
+
 [1]: https://www.producthunt.com/posts/ruffle
 [2]: http://slbkbs.org/jsgif/
 [3]: https://github.com/buzzfeed/libgif-js
@@ -110,3 +112,4 @@ We underestimated the convolutedness of the GIF format, so this library couldn't
 [8]: https://gist.github.com/devunwired/4479231
 [9]: https://twitter.com/_MattWay
 [10]: https://twitter.com/nickdrewe
+[11]: https://wethrift.com

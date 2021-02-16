@@ -294,8 +294,10 @@ function renderFrame() {
   var frame = loadedFrames[frameIndex]
 
   var start = new Date().getTime()
-
-  gifCtx.clearRect(0, 0, c.width, c.height)
+  
+  if (frame.disposalType ===  2) {
+    gifCtx.clearRect(0, 0, c.width, c.height)
+  }
 
   // draw the patch
   drawPatch(frame)

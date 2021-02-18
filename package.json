@@ -3,6 +3,7 @@
   "version": "2.0.0",
   "description": "Easy to use efficient .GIF parsing in javascript",
   "main": "lib/index.js",
+  "types": "index.d.ts",
   "scripts": {
     "build": "babel src --out-dir lib",
     "build-demo": "webpack demo/demo.js -o demo/demo.build.js --mode=\"none\""

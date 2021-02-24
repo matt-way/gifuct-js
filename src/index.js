@@ -15,7 +15,7 @@ const generatePatch = image => {
   for (var i = 0; i < totalPixels; i++) {
     const pos = i * 4
     const colorIndex = image.pixels[i]
-    const color = image.colorTable[colorIndex]
+    const color = image.colorTable[colorIndex] || [0, 0, 0]
     patchData[pos] = color[0]
     patchData[pos + 1] = color[1]
     patchData[pos + 2] = color[2]

@@ -69,7 +69,7 @@ export type ParsedFrame = {
   colorTable: [number, number, number][]
   delay: number
   disposalType: number
-  patch: Uint8ClampedArray[]
+  patch: Uint8ClampedArray
   pixels: number[]
   transparentIndex: number
 }

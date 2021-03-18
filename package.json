@@ -1,6 +1,6 @@
 {
   "name": "gifuct-js",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Easy to use efficient .GIF parsing in javascript",
   "main": "lib/index.js",
   "types": "index.d.ts",

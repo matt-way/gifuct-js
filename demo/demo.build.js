@@ -362,7 +362,7 @@ var generatePatch = function generatePatch(image) {
   for (var i = 0; i < totalPixels; i++) {
     var pos = i * 4;
     var colorIndex = image.pixels[i];
-    var color = image.colorTable[colorIndex];
+    var color = image.colorTable[colorIndex] || [0, 0, 0];
     patchData[pos] = color[0];
     patchData[pos + 1] = color[1];
     patchData[pos + 2] = color[2];
@@ -456,9 +456,18 @@ var subBlocksSchema = {
   blocks: function blocks(stream) {
     var terminator = 0x00;
     var chunks = [];
+    var streamSize = stream.data.length;
     var total = 0;
 
     for (var size = (0, _uint.readByte)()(stream); size !== terminator; size = (0, _uint.readByte)()(stream)) {
+      // catch corrupted files with no terminator
+      if (stream.pos + size >= streamSize) {
+        var availableSize = streamSize - stream.pos;
+        chunks.push((0, _uint.readBytes)(availableSize)(stream));
+        total += availableSize;
+        break;
+      }
+
       chunks.push((0, _uint.readBytes)(size)(stream));
       total += size;
     }

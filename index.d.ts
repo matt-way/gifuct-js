@@ -87,3 +87,15 @@ export function decompressFrames(
   parsedGif: ParsedGif,
   buildImagePatches: false
 ): ParsedFrameWithoutPatch[]
+
+export function decompressFrame(
+  frame: Frame,
+  gct: [number, number, number][],
+  buildImagePatches: true
+): ParsedFrame
+
+export function decompressFrame(
+  frame: Frame,
+  gct: [number, number, number][],
+  buildImagePatches: false
+): ParsedFrameWithoutPatch

@@ -1,6 +1,6 @@
 {
   "name": "gifuct-js",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Easy to use efficient .GIF parsing in javascript",
   "main": "lib/index.js",
   "types": "index.d.ts",
@@ -31,6 +31,6 @@
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
-    "js-binary-schema-parser": "^2.0.2"
+    "js-binary-schema-parser": "^2.0.3"
   }
 }

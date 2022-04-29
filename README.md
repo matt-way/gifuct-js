@@ -24,8 +24,11 @@ This decoder uses **[js-binary-schema-parser][5]** to parse the gif files (you c
 
         var promisedGif = fetch(gifURL)
              .then(resp => resp.arrayBuffer())
-             .then(buff => parseGIF(buff))
-             .then(gif => decompressFrames(gif, true));
+             .then(buff => {
+                 var gif = parseGIF(buff)
+                 var frames = decompressFrames(gif, true)
+                 return gif;
+             });
 
 - _XMLHttpRequest_
 

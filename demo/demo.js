@@ -195,14 +195,17 @@ function manipulate() {
   ctx.drawImage(c, 0, 0, pixelsX, pixelsY, 0, 0, c.width, c.height)
 }
 
+var needsDisposal = false
+
 function renderFrame() {
   // get the frame
   var frame = loadedFrames[frameIndex]
 
   var start = new Date().getTime()
   
-  if (frame.disposalType ===  2) {
+  if (needsDisposal) {
     gifCtx.clearRect(0, 0, c.width, c.height)
+    needsDisposal = false
   }
 
   // draw the patch
@@ -215,6 +218,10 @@ function renderFrame() {
   frameIndex++
   if (frameIndex >= loadedFrames.length) {
     frameIndex = 0
+  }
+  
+  if (frame.disposalType === 2) {
+    needsDisposal = true
   }
 
   var end = new Date().getTime()

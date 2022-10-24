@@ -25,7 +25,7 @@ const generatePatch = image => {
   return patchData
 }
 
-export const decompressFrame = (frame, gct, buildImagePatch) => {
+export const decompressFrame = (frame, gct, backgroundColorIndex, buildImagePatch) => {
   if (!frame.image) {
     console.warn('gif frame does not have associated image.')
     return
@@ -68,6 +68,12 @@ export const decompressFrame = (frame, gct, buildImagePatch) => {
     if (frame.gce.extras.transparentColorGiven) {
       resultImage.transparentIndex = frame.gce.transparentColorIndex
     }
+  } else {
+    // in case there is no `frame.gce`, e.g. the 1st frame of gif file generated
+    // by https://products.aspose.app/imaging/animation-maker
+    resultImage.delay = 10 * 10;
+    resultImage.disposalType = 1;
+    resultImage.transparentIndex = backgroundColorIndex;
   }
 
   // create canvas usable imagedata if desired
@@ -81,5 +87,5 @@ export const decompressFrame = (frame, gct, buildImagePatch) => {
 export const decompressFrames = (parsedGif, buildImagePatches) => {
   return parsedGif.frames
     .filter(f => f.image)
-    .map(f => decompressFrame(f, parsedGif.gct, buildImagePatches))
+    .map(f => decompressFrame(f, parsedGif.gct, parsedGif.lsd.backgroundColorIndex, buildImagePatches))
 }

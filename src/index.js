@@ -80,6 +80,6 @@ export const decompressFrame = (frame, gct, buildImagePatch) => {
 
 export const decompressFrames = (parsedGif, buildImagePatches) => {
   return parsedGif.frames
-    .filter(f => f.image)
+    .filter(f => !('application' in f))
     .map(f => decompressFrame(f, parsedGif.gct, buildImagePatches))
 }

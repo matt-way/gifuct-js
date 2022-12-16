@@ -77,7 +77,7 @@ The result of the `decompressFrames(gif, buildPatch)` function returns an array 
 
 _Automatic Patch Generation:_
 
-If the `buildPatch` param of the `dcompressFrames()` function is `true`, the parser will not only return the parsed and decompressed gif frames, but will also create canvas ready `Uint8ClampedArray` arrays of each gif frame image, so that they can easily be drawn using `ctx.putImageData()` for example. This requirement is common, however it was made optional because it makes assumptions about transparency. The [demo][4] makes use of this option.
+If the `buildPatch` param of the `decompressFrames()` function is `true`, the parser will not only return the parsed and decompressed gif frames, but will also create canvas ready `Uint8ClampedArray` arrays of each gif frame image, so that they can easily be drawn using `ctx.putImageData()` for example. This requirement is common, however it was made optional because it makes assumptions about transparency. The [demo][4] makes use of this option.
 
 _Disposal Method:_
 

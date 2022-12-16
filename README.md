@@ -19,62 +19,62 @@ _Decoding:_
 This decoder uses **[js-binary-schema-parser][5]** to parse the gif files (you can examine the schema in the source). This means the gif file must firstly be converted into a `Uint8Array` buffer in order to decode it. Some examples:
 
 - _fetch_
+```js
+import { parseGIF, decompressFrames } from 'gifuct-js'
 
-        import { parseGIF, decompressFrames } from 'gifuct-js'
-
-        var promisedGif = fetch(gifURL)
-             .then(resp => resp.arrayBuffer())
-             .then(buff => {
-                 var gif = parseGIF(buff)
-                 var frames = decompressFrames(gif, true)
-                 return gif;
-             });
-
+var promisedGif = fetch(gifURL)
+     .then(resp => resp.arrayBuffer())
+     .then(buff => {
+         var gif = parseGIF(buff)
+         var frames = decompressFrames(gif, true)
+         return gif;
+     });
+```
 - _XMLHttpRequest_
+```js
+import { parseGIF, decompressFrames } from 'gifuct-js'
 
-        import { parseGIF, decompressFrames } from 'gifuct-js'
+var oReq = new XMLHttpRequest();
+oReq.open("GET", gifURL, true);
+oReq.responseType = "arraybuffer";
 
-        var oReq = new XMLHttpRequest();
-        oReq.open("GET", gifURL, true);
-        oReq.responseType = "arraybuffer";
-
-        oReq.onload = function (oEvent) {
-            var arrayBuffer = oReq.response; // Note: not oReq.responseText
-            if (arrayBuffer) {
-                var gif = parseGIF(arrayBuffer);
-                var frames = decompressFrames(gif, true);
-                // do something with the frame data
-            }
-        };
-
-        oReq.send(null);
+oReq.onload = function (oEvent) {
+    var arrayBuffer = oReq.response; // Note: not oReq.responseText
+    if (arrayBuffer) {
+        var gif = parseGIF(arrayBuffer);
+        var frames = decompressFrames(gif, true);
+        // do something with the frame data
+    }
+};
+```
+oReq.send(null);
 
 _Result:_
 
 The result of the `decompressFrames(gif, buildPatch)` function returns an array of all the GIF image frames, and their meta data. Here is a an example frame:
-
-    {
-        // The color table lookup index for each pixel
-        pixels: [...],
-        // the dimensions of the gif frame (see disposal method)
-        dims: {
-            top: 0,
-            left: 10,
-            width: 100,
-            height: 50
-        },
-        // the time in milliseconds that this frame should be shown
-        delay: 50,
-        // the disposal method (see below)
-        disposalType: 1,
-        // an array of colors that the pixel data points to
-        colorTable: [...],
-        // An optional color index that represents transparency (see below)
-        transparentIndex: 33,
-        // Uint8ClampedArray color converted patch information for drawing
-        patch: [...]
-     }
-
+```js
+{
+    // The color table lookup index for each pixel
+    pixels: [...],
+    // the dimensions of the gif frame (see disposal method)
+    dims: {
+        top: 0,
+        left: 10,
+        width: 100,
+        height: 50
+    },
+    // the time in milliseconds that this frame should be shown
+    delay: 50,
+    // the disposal method (see below)
+    disposalType: 1,
+    // an array of colors that the pixel data points to
+    colorTable: [...],
+    // An optional color index that represents transparency (see below)
+    transparentIndex: 33,
+    // Uint8ClampedArray color converted patch information for drawing
+    patch: [...]
+ }
+```
 _Automatic Patch Generation:_
 
 If the `buildPatch` param of the `dcompressFrames()` function is `true`, the parser will not only return the parsed and decompressed gif frames, but will also create canvas ready `Uint8ClampedArray` arrays of each gif frame image, so that they can easily be drawn using `ctx.putImageData()` for example. This requirement is common, however it was made optional because it makes assumptions about transparency. The [demo][4] makes use of this option.

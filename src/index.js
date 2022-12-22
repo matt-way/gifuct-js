@@ -83,3 +83,20 @@ export const decompressFrames = (parsedGif, buildImagePatches) => {
     .filter(f => f.image)
     .map(f => decompressFrame(f, parsedGif.gct, buildImagePatches))
 }
+
+// Decompress frames for time ms.  Return {processedFrames, remainingFrames}
+export const decompressFramesForDuration = (frames, parsedGif, buildImagePatches, time) => {
+  const endTime = performance.now() + time;
+  const processedFrames = [];
+  let index;
+  for (index = 0; index < frames.length && performance.now() < endTime; index++) {
+    const frame = frames[index];
+    if (frame.image) {
+      processedFrames.push(decompressFrame(frame, parsedGif.gct, buildImagePatches));
+    }
+  }
+  return {
+    processedFrames,
+    remainingFrames: frames.slice(index)
+  }
+}

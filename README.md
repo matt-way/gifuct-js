@@ -12,7 +12,9 @@ You can see a demo of this library in action **[here][4]**
 
 _Installation:_
 
-    npm install gifuct-js
+```
+npm install gifuct-js
+```
 
 _Decoding:_
 
@@ -20,60 +22,66 @@ This decoder uses **[js-binary-schema-parser][5]** to parse the gif files (you c
 
 - _fetch_
 
-        import { parseGIF, decompressFrames } from 'gifuct-js'
+```js
+import { parseGIF, decompressFrames } from 'gifuct-js'
 
-        var promisedGif = fetch(gifURL)
-             .then(resp => resp.arrayBuffer())
-             .then(buff => {
-                 var gif = parseGIF(buff)
-                 var frames = decompressFrames(gif, true)
-                 return gif;
-             });
+var promisedGif = fetch(gifURL)
+     .then(resp => resp.arrayBuffer())
+     .then(buff => {
+         var gif = parseGIF(buff)
+         var frames = decompressFrames(gif, true)
+         return gif;
+     });
+```
 
 - _XMLHttpRequest_
 
-        import { parseGIF, decompressFrames } from 'gifuct-js'
+```js
+import { parseGIF, decompressFrames } from 'gifuct-js'
 
-        var oReq = new XMLHttpRequest();
-        oReq.open("GET", gifURL, true);
-        oReq.responseType = "arraybuffer";
+var oReq = new XMLHttpRequest();
+oReq.open("GET", gifURL, true);
+oReq.responseType = "arraybuffer";
 
-        oReq.onload = function (oEvent) {
-            var arrayBuffer = oReq.response; // Note: not oReq.responseText
-            if (arrayBuffer) {
-                var gif = parseGIF(arrayBuffer);
-                var frames = decompressFrames(gif, true);
-                // do something with the frame data
-            }
-        };
+oReq.onload = function (oEvent) {
+    var arrayBuffer = oReq.response; // Note: not oReq.responseText
+    if (arrayBuffer) {
+        var gif = parseGIF(arrayBuffer);
+        var frames = decompressFrames(gif, true);
+        // do something with the frame data
+    }
+};
 
-        oReq.send(null);
+oReq.send(null);
+```
 
 _Result:_
 
 The result of the `decompressFrames(gif, buildPatch)` function returns an array of all the GIF image frames, and their meta data. Here is a an example frame:
 
-    {
-        // The color table lookup index for each pixel
-        pixels: [...],
-        // the dimensions of the gif frame (see disposal method)
-        dims: {
-            top: 0,
-            left: 10,
-            width: 100,
-            height: 50
-        },
-        // the time in milliseconds that this frame should be shown
-        delay: 50,
-        // the disposal method (see below)
-        disposalType: 1,
-        // an array of colors that the pixel data points to
-        colorTable: [...],
-        // An optional color index that represents transparency (see below)
-        transparentIndex: 33,
-        // Uint8ClampedArray color converted patch information for drawing
-        patch: [...]
-     }
+```js
+{
+    // The color table lookup index for each pixel
+    pixels: [...],
+    // the dimensions of the gif frame (see disposal method)
+    dims: {
+        top: 0,
+        left: 10,
+        width: 100,
+        height: 50
+    },
+    // the time in milliseconds that this frame should be shown
+    delay: 50,
+    // the disposal method (see below)
+    disposalType: 1,
+    // an array of colors that the pixel data points to
+    colorTable: [...],
+    // An optional color index that represents transparency (see below)
+    transparentIndex: 33,
+    // Uint8ClampedArray color converted patch information for drawing
+    patch: [...]
+ }
+```
 
 _Automatic Patch Generation:_
 
